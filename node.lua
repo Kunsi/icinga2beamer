@@ -23,6 +23,7 @@ c_text[2] = {1, 1, 1}
 c_text[3] = {1, 1, 1}
 
 gl.setup(NATIVE_WIDTH, NATIVE_HEIGHT)
+local transform = util.screen_transform(CONFIG.rotate)
 
 util.file_watch("services.json", function(content)
     services = json.decode(content)
@@ -39,6 +40,7 @@ local white = resource.create_colored_texture(1,1,1,1)
 local base_time = N.base_time or 0
 
 function node.render()
+    transform()
     CONFIG.background_color.clear()
     CONFIG.font:write(NATIVE_WIDTH/2-time_width/2, 10, services.prettytime, 30, 1,1,1,1)
 

@@ -41,5 +41,18 @@
         "type": "string",
         "default": "https://icinga2/api/v1/objects/services?filter=service.state!=ServiceOK",
         "hint": "Full URL to the API endpoint which returns a list of monitored services. Keeping the filter is strongly recommended!"
+    }, {
+        "title": "Screen Rotation",
+        "ui_width": 4,
+        "name": "rotate",
+        "type": "select",
+        "default": 0,
+        "hint": "Rotation of screen (clockwise)",
+        "options": [
+            [0, "0°"],
+            [90, "90°"],
+            [180, "180°"],
+            [270, "270°"]
+        ]
     }]
 }

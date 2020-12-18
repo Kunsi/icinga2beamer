@@ -1,0 +1,45 @@
+{
+    "name": "Icinga2 Statusmonitor",
+    "permissions": {
+        "network": "Needs to connect to icinga2 api"
+    },
+    "options": [{
+        "title": "Background color",
+        "ui_width": 4,
+        "name": "background_color",
+        "type": "color",
+        "default": [0,0,0,1]
+    }, {
+        "title": "Font",
+        "ui_width": 8,
+        "name": "font",
+        "type": "font",
+        "default": "silkscreen.ttf"
+    }, {
+        "title": "icinga2 API user",
+        "ui_width": 6,
+        "name": "api_user",
+        "type": "string",
+        "default": "readonly"
+    }, {
+        "title": "icinga2 API password",
+        "ui_width": 6,
+        "name": "api_password",
+        "type": "string",
+        "default": "really_secure"
+    }, {
+        "title": "icinga2 API URL for hosts",
+        "ui_width": 12,
+        "name": "url_hosts",
+        "type": "string",
+        "default": "https://icinga2/api/v1/objects/hosts",
+        "hint": "Full URL to the API endpoint which returns a list of monitored hosts"
+    }, {
+        "title": "icinga2 API URL for services",
+        "ui_width": 12,
+        "name": "url_services",
+        "type": "string",
+        "default": "https://icinga2/api/v1/objects/services?filter=service.state!=ServiceOK",
+        "hint": "Full URL to the API endpoint which returns a list of monitored services. Keeping the filter is strongly recommended!"
+    }]
+}

@@ -1,0 +1,102 @@
+#!/usr/bin/env python
+import requests
+import traceback
+import time
+import json
+import urllib2
+import pytz
+import hashlib
+from datetime import datetime, timedelta
+from itertools import islice
+
+from hosted import CONFIG, NODE
+
+CONFIG.restart_on_update()
+
+def current_time():
+    timezone = pytz.timezone("Europe/Berlin")
+    now = datetime.utcnow()
+    now = now.replace(tzinfo=pytz.utc)
+    now = now.astimezone(timezone)
+    now = now.replace(tzinfo=None)
+    return now
+
+def to_unixtimestamp(dt):
+    return int(time.mktime(dt.timetuple()))
+
+def regenerate():
+    now = current_time()
+
+    services = {
+        'generated': to_unixtimestamp(now),
+        'prettytime': now.strftime('%d.%m.%Y %H:%M:%S'),
+        'services': [],
+    }
+
+    try:
+        hosts = requests.get(CONFIG["url_hosts"], auth=(CONFIG["api_user"], CONFIG["api_password"]), verify=False).json()
+        serv = requests.get(CONFIG["url_services"], auth=(CONFIG["api_user"], CONFIG["api_password"]), verify=False).json()
+
+        if 'results' not in hosts:
+            raise KeyError('API call for hosts did not return any results')
+        if 'results' not in serv:
+            raise KeyError('API call for services did not return any results')
+
+        for host in hosts['results']:
+            if host['attrs']['downtime_depth'] > 0:
+                continue
+
+            if host['attrs']['problem']:
+                services['services'].append({
+                    'host': host['attrs']['display_name'],
+                    'service': '-- HOST --',
+                    'state': 2,
+                    'type': host['attrs']['state_type'],
+                    'output': host['attrs']['last_check_result']['output'].splitlines(),
+                })
+
+        for svc in serv['results']:
+            if host['attrs']['downtime_depth'] > 0:
+                continue
+
+            if svc['attrs']['problem']:
+                services['services'].append({
+                    'host': svc['attrs']['host_name'],
+                    'service': svc['attrs']['display_name'],
+                    'state': svc['attrs']['state'],
+                    'type': svc['attrs']['state_type'],
+                    'output': svc['attrs']['last_check_result']['output'].splitlines(),
+                })
+
+        services['services'].sort(key=lambda x: str(x['type'])+str(x['state'])+x['host']+x['service'])
+        services['services'].reverse()
+    except Exception as e:
+        services['services'].append({
+            'host': 'icinga2beamer',
+            'service': 'INTERNAL',
+            'state': 2,
+            'output': [repr(e)],
+        })
+
+    if len(services['services']) == 0:
+        services['services'].append({
+            'host': '',
+            'service': 'icinga2',
+            'state': 0,
+            'output': ['Everything is fine. Go get some coffee.'],
+        })
+
+    with file("services.json", "wb") as f:
+        f.write(json.dumps(services, ensure_ascii=False).encode("utf8"))
+
+def main():
+    while 1:
+        try:
+            regenerate()
+        except Exception:
+            traceback.print_exc()
+
+        time.sleep(20)
+
+if __name__ == "__main__":
+    main()

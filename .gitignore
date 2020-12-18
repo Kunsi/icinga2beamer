@@ -1,0 +1,6 @@
+services.json
+config.json
+*.xml
+*.pyc
+.venv
+*.swp

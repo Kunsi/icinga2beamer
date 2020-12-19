@@ -13,6 +13,8 @@ from hosted import CONFIG, NODE
 
 CONFIG.restart_on_update()
 
+SORT_ORDER = [0, 1, 3, 2]
+
 def current_time():
     timezone = pytz.timezone("Europe/Berlin")
     now = datetime.utcnow()
@@ -51,8 +53,14 @@ def regenerate():
                     'host': host['attrs']['display_name'],
                     'service': '-- HOST --',
                     'state': 2,
-                    'type': host['attrs']['state_type'],
+                    'type': int(host['attrs']['state_type']),
                     'output': host['attrs']['last_check_result']['output'].splitlines(),
+                    'sort': '{}{}{}{}'.format(
+                        int(host['attrs']['state_type']),
+                        SORT_ORDER[2],
+                        host['attrs']['display_name'],
+                        '--',
+                    ),
                 })
 
         for svc in serv['results']:
@@ -63,19 +71,24 @@ def regenerate():
                 services['services'].append({
                     'host': svc['attrs']['host_name'],
                     'service': svc['attrs']['display_name'],
-                    'state': svc['attrs']['state'],
-                    'type': svc['attrs']['state_type'],
+                    'state': int(svc['attrs']['state']),
+                    'type': int(svc['attrs']['state_type']),
                     'output': svc['attrs']['last_check_result']['output'].splitlines(),
+                    'sort': '{}{}{}{}'.format(
+                        int(svc['attrs']['state_type']),
+                        SORT_ORDER[int(svc['attrs']['state'])],
+                        svc['attrs']['host_name'],
+                        svc['attrs']['display_name'],
+                    ),
                 })
-
-        services['services'].sort(key=lambda x: str(x['type'])+str(x['state'])+x['host']+x['service'])
-        services['services'].reverse()
     except Exception as e:
         services['services'].append({
             'host': 'icinga2beamer',
             'service': 'INTERNAL',
             'state': 2,
+            'type': 1,
             'output': [repr(e)],
+            'sort': 1000,
         })
 
     if len(services['services']) == 0:
@@ -83,8 +96,12 @@ def regenerate():
             'host': '',
             'service': 'icinga2',
             'state': 0,
+            'type': 1,
             'output': ['Everything is fine. Go get some coffee.'],
+            'sort': 1000,
         })
+
+    services['services'].sort(key=lambda x: x['sort'], reverse=True)
 
     with file("services.json", "wb") as f:
         f.write(json.dumps(services, ensure_ascii=False).encode("utf8"))

@@ -82,6 +82,9 @@ function node.render()
 
         y = y+60
 
+        --debug output
+        --CONFIG.font:write(10, y, serv.sort, 10, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
+
         for idx, line in ipairs(serv.output) do
             CONFIG.font:write(indent+40, y, line, 30, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
             y = y+40

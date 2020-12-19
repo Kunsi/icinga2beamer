@@ -88,5 +88,9 @@ function node.render()
         end
 
         y = y+12
+
+        if y > real_height then
+            break
+        end
     end
 end

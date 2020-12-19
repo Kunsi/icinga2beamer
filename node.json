@@ -7,15 +7,15 @@
         "title": "Display Options",
         "type": "section"
     }, {
-        "title": "Background color",
-        "ui_width": 4,
-        "name": "background_color",
-        "type": "color",
-        "default": [0,0,0,1]
+        "title": "Headings Font",
+        "ui_width": 6,
+        "name": "header_font",
+        "type": "font",
+        "default": "silkscreen.ttf"
     }, {
-        "title": "Font",
-        "ui_width": 8,
-        "name": "font",
+        "title": "Output Font",
+        "ui_width": 6,
+        "name": "output_font",
         "type": "font",
         "default": "silkscreen.ttf"
     }, {
@@ -59,8 +59,14 @@
             [40, "40px"]
         ]
     }, {
+        "title": "Background color",
+        "ui_width": 3,
+        "name": "background_color",
+        "type": "color",
+        "default": [0,0,0,1]
+    }, {
         "title": "instance name",
-        "ui_width": 12,
+        "ui_width": 9,
         "name": "instance_name",
         "type": "string",
         "default": "icinga2",

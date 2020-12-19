@@ -51,15 +51,15 @@ function node.render()
         titlebar = servics.prettytime
     end
 
-    local title_width = CONFIG.font:width(titlebar, CONFIG.output_size)
+    local title_width = CONFIG.header_font:width(titlebar, CONFIG.output_size)
     local host_width = 0
 
     transform()
     CONFIG.background_color.clear()
-    CONFIG.font:write(real_width/2-title_width/2, CONFIG.output_size*0.5, titlebar, CONFIG.output_size, 1,1,1,1)
+    CONFIG.header_font:write(real_width/2-title_width/2, CONFIG.output_size*0.5, titlebar, CONFIG.output_size, 1,1,1,1)
 
     for idx, service in ipairs(services.services) do
-        host_width = math.max(host_width, CONFIG.font:width(service.host, CONFIG.header_size))
+        host_width = math.max(host_width, CONFIG.header_font:width(service.host, CONFIG.header_size))
     end
 
     local y = CONFIG.output_size*2
@@ -67,10 +67,10 @@ function node.render()
         host_size = CONFIG.header_size
         svc_size = CONFIG.header_size
 
-        while CONFIG.font:width(serv.host, host_size) > real_width/2-20 do
+        while CONFIG.header_font:width(serv.host, host_size) > real_width/2-20 do
             host_size = host_size - 2
         end
-        while CONFIG.font:width(serv.service, svc_size) > real_width/2-50 do
+        while CONFIG.header_font:width(serv.service, svc_size) > real_width/2-50 do
             svc_size = svc_size - 2
         end
 
@@ -86,8 +86,8 @@ function node.render()
 
         y = y+margin
 
-        CONFIG.font:write(10, y, serv.host, host_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
-        CONFIG.font:write(indent, y, serv.service, svc_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
+        CONFIG.header_font:write(10, y, serv.host, host_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
+        CONFIG.header_font:write(indent, y, serv.service, svc_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
 
         y = y+CONFIG.header_size+CONFIG.output_size*0.5
 
@@ -95,7 +95,7 @@ function node.render()
         --CONFIG.font:write(10, y, serv.sort, 10, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
 
         for idx, line in ipairs(serv.output) do
-            CONFIG.font:write(indent, y, line, CONFIG.output_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
+            CONFIG.output_font:write(indent, y, line, CONFIG.output_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
             y = y+CONFIG.output_size*1.5
         end
 

@@ -45,12 +45,18 @@ function node.render()
         end
     end
 
-    local time_width = CONFIG.font:width(services.prettytime, CONFIG.output_size)
+    if CONFIG.instance_name ~= "" then
+        titlebar = CONFIG.instance_name .. " - " .. services.prettytime
+    else
+        titlebar = servics.prettytime
+    end
+
+    local title_width = CONFIG.font:width(titlebar, CONFIG.output_size)
     local host_width = 0
 
     transform()
     CONFIG.background_color.clear()
-    CONFIG.font:write(real_width/2-time_width/2, CONFIG.output_size*0.5, services.prettytime, CONFIG.output_size, 1,1,1,1)
+    CONFIG.font:write(real_width/2-title_width/2, CONFIG.output_size*0.5, titlebar, CONFIG.output_size, 1,1,1,1)
 
     for idx, service in ipairs(services.services) do
         host_width = math.max(host_width, CONFIG.font:width(service.host, CONFIG.header_size))

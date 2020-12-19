@@ -59,6 +59,13 @@
             [40, "40px"]
         ]
     }, {
+        "title": "instance name",
+        "ui_width": 12,
+        "name": "instance_name",
+        "type": "string",
+        "default": "icinga2",
+        "hint": "Something to describe the displayed output, will be shown next to the update datum"
+    }, {
         "title": "Connection to icinga2",
         "type": "section"
     }, {

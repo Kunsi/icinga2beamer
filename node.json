@@ -4,6 +4,9 @@
         "network": "Needs to connect to icinga2 api"
     },
     "options": [{
+        "title": "Display Options",
+        "type": "section"
+    }, {
         "title": "Background color",
         "ui_width": 4,
         "name": "background_color",
@@ -16,17 +19,67 @@
         "type": "font",
         "default": "silkscreen.ttf"
     }, {
+        "title": "Screen Rotation",
+        "ui_width": 4,
+        "name": "rotate",
+        "type": "select",
+        "default": 0,
+        "hint": "Rotation of screen (clockwise)",
+        "options": [
+            [0, "0°"],
+            [90, "90°"],
+            [180, "180°"],
+            [270, "270°"]
+        ]
+    }, {
+        "title": "Font Size (Headings)",
+        "ui_width": 4,
+        "name": "header_size",
+        "type": "select",
+        "default": 50,
+        "hint": "Font size of Host and Service name. Will be reduced to half screen width, if needed.",
+        "options": [
+            [20, "20px"],
+            [30, "30px"],
+            [40, "40px"],
+            [50, "50px"],
+            [60, "60px"]
+        ]
+    }, {
+        "title": "Font Size (Output)",
+        "ui_width": 4,
+        "name": "output_size",
+        "type": "select",
+        "default": 30,
+        "hint": "Font size of Check Output.",
+        "options": [
+            [10, "10px"],
+            [20, "20px"],
+            [30, "30px"],
+            [40, "40px"]
+        ]
+    }, {
+        "title": "Connection to icinga2",
+        "type": "section"
+    }, {
         "title": "icinga2 API user",
-        "ui_width": 6,
+        "ui_width": 5,
         "name": "api_user",
         "type": "string",
         "default": "readonly"
     }, {
         "title": "icinga2 API password",
-        "ui_width": 6,
+        "ui_width": 5,
         "name": "api_password",
         "type": "string",
         "default": "really_secure"
+    }, {
+        "title": "Verify Certs",
+        "ui_width": 2,
+        "name": "ssl_verify",
+        "type": "boolean",
+        "default": true,
+        "hint": "Verify SSL certificates when doing requests to icinga2?"
     }, {
         "title": "icinga2 API URL for hosts",
         "ui_width": 12,
@@ -41,18 +94,5 @@
         "type": "string",
         "default": "https://icinga2/api/v1/objects/services?filter=service.state!=ServiceOK",
         "hint": "Full URL to the API endpoint which returns a list of monitored services. Keeping the filter is strongly recommended!"
-    }, {
-        "title": "Screen Rotation",
-        "ui_width": 4,
-        "name": "rotate",
-        "type": "select",
-        "default": 0,
-        "hint": "Rotation of screen (clockwise)",
-        "options": [
-            [0, "0°"],
-            [90, "90°"],
-            [180, "180°"],
-            [270, "270°"]
-        ]
     }]
 }

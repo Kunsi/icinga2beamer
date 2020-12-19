@@ -2,8 +2,6 @@ util.init_hosted()
 
 local json = require "json"
 local services = {}
-local host_width = 0
-local time_width = 0
 local rotate_before = nil
 local transform = nil
 
@@ -28,13 +26,6 @@ gl.setup(NATIVE_WIDTH, NATIVE_HEIGHT)
 
 util.file_watch("services.json", function(content)
     services = json.decode(content)
-    host_width = 0
-
-    for idx, service in ipairs(services.services) do
-        host_width = math.max(host_width, CONFIG.font:width(service.host, 50))
-    end
-
-    time_width = CONFIG.font:width(services.prettytime, 30)
 end)
 
 local white = resource.create_colored_texture(1,1,1,1)
@@ -54,20 +45,31 @@ function node.render()
         end
     end
 
+    local time_width = CONFIG.font:width(services.prettytime, CONFIG.output_size)
+    local host_width = 0
+
     transform()
     CONFIG.background_color.clear()
-    CONFIG.font:write(real_width/2-time_width/2, 10, services.prettytime, 30, 1,1,1,1)
+    CONFIG.font:write(real_width/2-time_width/2, CONFIG.output_size*0.5, services.prettytime, CONFIG.output_size, 1,1,1,1)
 
-    local y = 50
+    for idx, service in ipairs(services.services) do
+        host_width = math.max(host_width, CONFIG.font:width(service.host, CONFIG.header_size))
+    end
+
+    local y = CONFIG.output_size*2
     for idx, serv in ipairs(services.services) do
-        my_height = (#serv.output*40)+90
-        my_font_size = 50
+        my_height = (#serv.output*CONFIG.output_size*1.5)+40+CONFIG.header_size
+        host_size = CONFIG.header_size
+        svc_size = CONFIG.header_size
 
-        while CONFIG.font:width(serv.host, my_font_size) > real_width/2 do
-            my_font_size = my_font_size - 2
+        while CONFIG.font:width(serv.host, host_size) > real_width/2-20 do
+            host_size = host_size - 2
+        end
+        while CONFIG.font:width(serv.service, svc_size) > real_width/2-50 do
+            svc_size = svc_size - 2
         end
 
-        indent = math.min(host_width, real_width/2)
+        indent = math.min(host_width, real_width/2)+40
 
         if serv.type == 0 then
             c_soft[serv.state]:draw(0, y, NATIVE_WIDTH, y+my_height)
@@ -77,17 +79,17 @@ function node.render()
 
         y = y+20
 
-        CONFIG.font:write(10, y, serv.host, my_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
-        CONFIG.font:write(indent+40, y, serv.service, 50, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
+        CONFIG.font:write(10, y, serv.host, host_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
+        CONFIG.font:write(indent, y, serv.service, svc_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
 
-        y = y+60
+        y = y+CONFIG.header_size+10
 
         --debug output
         --CONFIG.font:write(10, y, serv.sort, 10, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
 
         for idx, line in ipairs(serv.output) do
-            CONFIG.font:write(indent+40, y, line, 30, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
-            y = y+40
+            CONFIG.font:write(indent, y, line, CONFIG.output_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
+            y = y+CONFIG.output_size*1.5
         end
 
         y = y+12

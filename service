@@ -38,8 +38,8 @@ def regenerate():
     try:
         broken_hosts = set()
 
-        hosts = requests.get(CONFIG["url_hosts"], auth=(CONFIG["api_user"], CONFIG["api_password"]), verify=False).json()
-        serv = requests.get(CONFIG["url_services"], auth=(CONFIG["api_user"], CONFIG["api_password"]), verify=False).json()
+        hosts = requests.get(CONFIG["url_hosts"], auth=(CONFIG["api_user"], CONFIG["api_password"]), verify=CONFIG["ssl_verify"]).json()
+        serv = requests.get(CONFIG["url_services"], auth=(CONFIG["api_user"], CONFIG["api_password"]), verify=CONFIG["ssl_verify"]).json()
 
         if 'results' not in hosts:
             raise KeyError('API call for hosts did not return any results')

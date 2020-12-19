@@ -58,7 +58,6 @@ function node.render()
 
     local y = CONFIG.output_size*2
     for idx, serv in ipairs(services.services) do
-        my_height = (#serv.output*CONFIG.output_size*1.5)+40+CONFIG.header_size
         host_size = CONFIG.header_size
         svc_size = CONFIG.header_size
 
@@ -69,6 +68,8 @@ function node.render()
             svc_size = svc_size - 2
         end
 
+        margin = math.min(CONFIG.output_size, 20)
+        my_height = (#serv.output*CONFIG.output_size*1.5)+margin*2+CONFIG.header_size+CONFIG.output_size*0.5
         indent = math.min(host_width, real_width/2)+40
 
         if serv.type == 0 then
@@ -77,12 +78,12 @@ function node.render()
             c_hard[serv.state]:draw(0, y, NATIVE_WIDTH, y+my_height)
         end
 
-        y = y+20
+        y = y+margin
 
         CONFIG.font:write(10, y, serv.host, host_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
         CONFIG.font:write(indent, y, serv.service, svc_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
 
-        y = y+CONFIG.header_size+10
+        y = y+CONFIG.header_size+CONFIG.output_size*0.5
 
         --debug output
         --CONFIG.font:write(10, y, serv.sort, 10, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
@@ -92,7 +93,7 @@ function node.render()
             y = y+CONFIG.output_size*1.5
         end
 
-        y = y+12
+        y = y+margin+2
 
         if y > real_height then
             break

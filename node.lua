@@ -61,6 +61,13 @@ function node.render()
     local y = 50
     for idx, serv in ipairs(services.services) do
         my_height = (#serv.output*40)+90
+        my_font_size = 50
+
+        while CONFIG.font:width(serv.host, my_font_size) > real_width/2 do
+            my_font_size = my_font_size - 2
+        end
+
+        indent = math.min(host_width, real_width/2)
 
         if serv.type == 0 then
             c_soft[serv.state]:draw(0, y, NATIVE_WIDTH, y+my_height)
@@ -70,13 +77,13 @@ function node.render()
 
         y = y+20
 
-        CONFIG.font:write(10, y, serv.host, 50, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
-        CONFIG.font:write(host_width+40, y, serv.service, 50, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
+        CONFIG.font:write(10, y, serv.host, my_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
+        CONFIG.font:write(indent+40, y, serv.service, 50, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
 
         y = y+60
 
         for idx, line in ipairs(serv.output) do
-            CONFIG.font:write(host_width+40, y, line, 30, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
+            CONFIG.font:write(indent+40, y, line, 30, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
             y = y+40
         end
 

@@ -3,6 +3,11 @@
     "permissions": {
         "network": "Needs to connect to icinga2 api"
     },
+    "optional": [
+        "README.md",
+        "COPYRIGHT",
+        "screenshot.jpg"
+    ],
     "options": [{
         "title": "Display Options",
         "type": "section"

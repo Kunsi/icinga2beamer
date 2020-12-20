@@ -1,5 +1,14 @@
 {
     "name": "icinga2beamer",
     "author": "hi@kunsmann.eu",
-    "desc": "icinga2 information radiator"
+    "desc": "icinga2 information radiator",
+    "repository": "https://git.kunsmann.eu/kunsi/icinga2beamer",
+    "platforms": [
+        "pi/epoch-1",
+        "pi/epoch-2"
+    ],
+    "offline": {
+        "support": "no",
+        "info": "Needs to fetch information from icinga server"
+    }
 }

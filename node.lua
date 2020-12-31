@@ -68,10 +68,10 @@ function node.render()
         svc_size = CONFIG.header_size
 
         while CONFIG.header_font:width(serv.host, host_size) > real_width/2-20 do
-            host_size = host_size - 2
+            host_size = host_size - 1
         end
         while CONFIG.header_font:width(serv.service, svc_size) > real_width/2-50 do
-            svc_size = svc_size - 2
+            svc_size = svc_size - 1
         end
 
         margin = math.min(CONFIG.output_size, 20)

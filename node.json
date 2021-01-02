@@ -70,8 +70,15 @@
         "type": "color",
         "default": [0,0,0,1]
     }, {
+        "title": "Show ACK",
+        "ui_width": 2,
+        "name": "show_ack",
+        "type": "boolean",
+        "default": true,
+        "hint": "Show acknowledged problems (adds a note, too)"
+    }, {
         "title": "instance name",
-        "ui_width": 9,
+        "ui_width": 7,
         "name": "instance_name",
         "type": "string",
         "default": "icinga2",

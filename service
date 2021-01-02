@@ -53,12 +53,21 @@ def regenerate():
                 if host['attrs']['downtime_depth'] > 0:
                     continue
 
+                if host['attrs']['acknowledgement'] == 1:
+                    if not CONFIG['show_ack']:
+                        continue
+
+                    ack = 'ACKNOWLEDGED'
+                else:
+                    ack = ''
+
                 services['services'].append({
                     'host': host['attrs']['display_name'],
                     'service': '-- HOST --',
                     'state': 2,
                     'type': int(host['attrs']['state_type']),
                     'output': host['attrs']['last_check_result']['output'].splitlines(),
+                    'ack': ack,
                     'sort': '{}{}{}{}'.format(
                         int(host['attrs']['state_type'])*-1,
                         SORT_ORDER[2],
@@ -72,12 +81,21 @@ def regenerate():
                 if svc['attrs']['downtime_depth'] > 0 or svc['attrs']['host_name'] in broken_hosts:
                     continue
 
+                if svc['attrs']['acknowledgement'] == 1:
+                    if not CONFIG['show_ack']:
+                        continue
+
+                    ack = 'ACKNOWLEDGED'
+                else:
+                    ack = ''
+
                 services['services'].append({
                     'host': svc['attrs']['host_name'],
                     'service': svc['attrs']['display_name'],
                     'state': int(svc['attrs']['state']),
                     'type': int(svc['attrs']['state_type']),
                     'output': svc['attrs']['last_check_result']['output'].splitlines(),
+                    'ack': ack,
                     'sort': '{}{}{}{}'.format(
                         int(svc['attrs']['state_type'])*-1,
                         SORT_ORDER[int(svc['attrs']['state'])],
@@ -91,6 +109,7 @@ def regenerate():
             'service': 'INTERNAL',
             'state': 2,
             'type': 1,
+            'ack': '',
             'output': [repr(e)],
             'sort': 999,
         })
@@ -101,6 +120,7 @@ def regenerate():
             'service': 'icinga2',
             'state': 0,
             'type': 1,
+            'ack': '',
             'output': ['Everything is fine. Go get some coffee.'],
             'sort': 1000,
         })

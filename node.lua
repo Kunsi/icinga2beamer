@@ -91,8 +91,7 @@ function node.render()
 
         y = y+CONFIG.header_size+CONFIG.output_size*0.5
 
-        --debug output
-        --CONFIG.font:write(10, y, serv.sort, 10, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
+        CONFIG.output_font:write(10, y, serv.ack, CONFIG.output_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
 
         for idx, line in ipairs(serv.output) do
             CONFIG.output_font:write(indent, y, line, CONFIG.output_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)

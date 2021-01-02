@@ -13,7 +13,7 @@ from hosted import CONFIG, NODE
 
 CONFIG.restart_on_update()
 
-SORT_ORDER = [0, 1, 3, 2]
+SORT_ORDER = [3, 2, 0, 1]
 
 def current_time():
     timezone = pytz.timezone("Europe/Berlin")
@@ -60,7 +60,7 @@ def regenerate():
                     'type': int(host['attrs']['state_type']),
                     'output': host['attrs']['last_check_result']['output'].splitlines(),
                     'sort': '{}{}{}{}'.format(
-                        int(host['attrs']['state_type']),
+                        int(host['attrs']['state_type'])*-1,
                         SORT_ORDER[2],
                         host['attrs']['display_name'],
                         '--',
@@ -79,7 +79,7 @@ def regenerate():
                     'type': int(svc['attrs']['state_type']),
                     'output': svc['attrs']['last_check_result']['output'].splitlines(),
                     'sort': '{}{}{}{}'.format(
-                        int(svc['attrs']['state_type']),
+                        int(svc['attrs']['state_type'])*-1,
                         SORT_ORDER[int(svc['attrs']['state'])],
                         svc['attrs']['host_name'],
                         svc['attrs']['display_name'],
@@ -92,7 +92,7 @@ def regenerate():
             'state': 2,
             'type': 1,
             'output': [repr(e)],
-            'sort': 1000,
+            'sort': 999,
         })
 
     if len(services['services']) == 0:
@@ -105,7 +105,7 @@ def regenerate():
             'sort': 1000,
         })
 
-    services['services'].sort(key=lambda x: x['sort'], reverse=True)
+    services['services'].sort(key=lambda x: x['sort'])
 
     with file("services.json", "wb") as f:
         f.write(json.dumps(services, ensure_ascii=False).encode("utf8"))

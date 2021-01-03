@@ -1,8 +1,14 @@
 {
     "name": "icinga2beamer",
-    "author": "hi@kunsmann.eu",
+    "author": "Kunsi <hi@kunsmann.eu>",
     "desc": "icinga2 information radiator",
     "repository": "https://git.kunsmann.eu/kunsi/icinga2beamer",
+    "nesting": {
+        "parents": [
+            "top-level"
+        ],
+        "childs": "any"
+    },
     "platforms": [
         "pi/epoch-1",
         "pi/epoch-2"

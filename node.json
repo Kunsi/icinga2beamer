@@ -65,24 +65,31 @@
         ]
     }, {
         "title": "Background color",
-        "ui_width": 3,
+        "ui_width": 4,
         "name": "background_color",
         "type": "color",
         "default": [0,0,0,1]
     }, {
+        "title": "instance name",
+        "ui_width": 8,
+        "name": "instance_name",
+        "type": "string",
+        "default": "icinga2",
+        "hint": "Something to describe the displayed output, will be shown next to the update datum"
+    }, {
         "title": "Show ACK",
-        "ui_width": 2,
+        "ui_width": 3,
         "name": "show_ack",
         "type": "boolean",
         "default": true,
         "hint": "Show acknowledged problems (adds a note, too)"
     }, {
-        "title": "instance name",
-        "ui_width": 7,
-        "name": "instance_name",
-        "type": "string",
-        "default": "icinga2",
-        "hint": "Something to describe the displayed output, will be shown next to the update datum"
+        "title": "Show SOFT",
+        "ui_width": 3,
+        "name": "show_soft",
+        "type": "boolean",
+        "default": true,
+        "hint": "Show SOFT checks on bottom of the list"
     }, {
         "title": "Connection to icinga2",
         "type": "section"

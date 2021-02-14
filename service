@@ -61,6 +61,9 @@ def regenerate():
                 else:
                     ack = ''
 
+                if not CONFIG['show_soft'] and int(host['attrs']['state_type']) == 0:
+                    continue
+
                 services['services'].append({
                     'host': host['attrs']['display_name'],
                     'service': '-- HOST --',
@@ -88,6 +91,9 @@ def regenerate():
                     ack = 'ACKNOWLEDGED'
                 else:
                     ack = ''
+
+                if not CONFIG['show_soft'] and int(svc['attrs']['state_type']) == 0:
+                    continue
 
                 services['services'].append({
                     'host': svc['attrs']['host_name'],

@@ -35,14 +35,14 @@ function node.render()
     if rotate_before ~= CONFIG.rotate then
         transform = util.screen_transform(CONFIG.rotate)
         rotate_before = CONFIG.rotate
+    end
 
-        if rotate_before == 90 or rotate_before == 270 then
-            real_width = NATIVE_HEIGHT
-            real_height = NATIVE_WIDTH
-        else
-            real_width = NATIVE_WIDTH
-            real_height = NATIVE_HEIGHT
-        end
+    if rotate_before == 90 or rotate_before == 270 then
+        real_width = NATIVE_HEIGHT
+        real_height = NATIVE_WIDTH
+    else
+        real_width = NATIVE_WIDTH
+        real_height = NATIVE_HEIGHT
     end
 
     if CONFIG.instance_name ~= "" then
@@ -66,22 +66,22 @@ function node.render()
     for idx, serv in ipairs(services.services) do
         host_size = CONFIG.header_size
         svc_size = CONFIG.header_size
+        margin = math.min(CONFIG.output_size, 20)
 
-        while CONFIG.header_font:width(serv.host, host_size) > real_width/2-20 do
+        while CONFIG.header_font:width(serv.host, host_size) > real_width/2-margin*1.5 do
             host_size = host_size - 1
         end
-        while CONFIG.header_font:width(serv.service, svc_size) > real_width/2-50 do
+        while CONFIG.header_font:width(serv.service, svc_size) > real_width/2-margin*1.5 do
             svc_size = svc_size - 1
         end
 
-        margin = math.min(CONFIG.output_size, 20)
         my_height = (#serv.output*CONFIG.output_size*1.5)+margin*2+CONFIG.header_size+CONFIG.output_size*0.5
-        indent = math.min(host_width, real_width/2)+40
+        indent = math.min(host_width, real_width/2-margin*1.5)+margin*2
 
         if serv.type == 0 then
-            c_soft[serv.state]:draw(0, y, NATIVE_WIDTH, y+my_height)
+            c_soft[serv.state]:draw(0, y, real_width, y+my_height)
         else
-            c_hard[serv.state]:draw(0, y, NATIVE_WIDTH, y+my_height)
+            c_hard[serv.state]:draw(0, y, real_width, y+my_height)
         end
 
         y = y+margin

@@ -45,9 +45,13 @@
         "hint": "Font size of Host and Service name. Will be reduced to half screen width, if needed.",
         "options": [
             [20, "20px"],
+            [25, "25px"],
             [30, "30px"],
+            [35, "35px"],
             [40, "40px"],
+            [45, "45px"],
             [50, "50px"],
+            [55, "55px"],
             [60, "60px"]
         ]
     }, {
@@ -59,8 +63,11 @@
         "hint": "Font size of Check Output.",
         "options": [
             [10, "10px"],
+            [15, "15px"],
             [20, "20px"],
+            [25, "25px"],
             [30, "30px"],
+            [35, "35px"],
             [40, "40px"]
         ]
     }, {

@@ -6,15 +6,16 @@ local rotate_before = nil
 local transform = nil
 
 local c_hard = {}
-c_hard[0] = resource.create_colored_texture(0,   0.6, 0,   1)
-c_hard[1] = resource.create_colored_texture(0.8, 0.9, 0,   1)
-c_hard[2] = resource.create_colored_texture(0.8, 0,   0,   1)
-c_hard[3] = resource.create_colored_texture(0.6, 0,   0.7, 1)
+c_hard[0] = resource.create_colored_texture(0,   0.666, 0,   1)
+c_hard[1] = resource.create_colored_texture(0.8, 0.466, 0,   1)
+c_hard[2] = resource.create_colored_texture(0.8, 0,     0,   1)
+c_hard[3] = resource.create_colored_texture(0.8, 0,     0.8, 1)
 
 local c_soft = {}
-c_soft[1] = resource.create_colored_texture(0.3, 0.4, 0,   1)
-c_soft[2] = resource.create_colored_texture(0.3, 0,   0,   1)
-c_soft[3] = resource.create_colored_texture(0.3, 0,   0.4, 1)
+c_soft[0] = resource.create_colored_texture(0,   0.666, 0,   0.6)
+c_soft[1] = resource.create_colored_texture(0.8, 0.466, 0,   0.75)
+c_soft[2] = resource.create_colored_texture(0.8, 0,     0,   0.6)
+c_soft[3] = resource.create_colored_texture(0.8, 0,     0.8, 0.6)
 
 local c_text = {}
 c_text[0] = {1, 1, 1}

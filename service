@@ -35,11 +35,15 @@ def limit_output_lines(output, num_lines=10):
         return output
 
     more = actual-(num_lines-1)
+    if more > 1:
+        s = 's'
+    else:
+        s = ''
 
     result = output[:(num_lines-1)]
-    result.append('... and {} more line{s}'.format(
+    result.append('... and {} more line{}'.format(
         more,
-        's' if more > 1 else '',
+        s,
     ))
 
     return result

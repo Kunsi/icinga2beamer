@@ -23,8 +23,27 @@ def current_time():
     now = now.replace(tzinfo=None)
     return now
 
+
 def to_unixtimestamp(dt):
     return int(time.mktime(dt.timetuple()))
+
+
+def limit_output_lines(output, num_lines=10):
+    actual = len(output)
+
+    if actual <= num_lines:
+        return output
+
+    more = actual-(num_lines-1)
+
+    result = output[:(num_lines-1)]
+    result.append('... and {} more line{s}'.format(
+        more,
+        's' if more > 1 else '',
+    ))
+
+    return result
+
 
 def regenerate():
     now = current_time()
@@ -69,7 +88,7 @@ def regenerate():
                     'service': '-- HOST --',
                     'state': 2,
                     'type': int(host['attrs']['state_type']),
-                    'output': host['attrs']['last_check_result']['output'].splitlines(),
+                    'output': limit_output_lines(host['attrs']['last_check_result']['output'].splitlines(), 3),
                     'ack': ack,
                     'sort': '{}{}{}{}'.format(
                         int(host['attrs']['state_type'])*-1,
@@ -100,7 +119,7 @@ def regenerate():
                     'service': svc['attrs']['display_name'],
                     'state': int(svc['attrs']['state']),
                     'type': int(svc['attrs']['state_type']),
-                    'output': svc['attrs']['last_check_result']['output'].splitlines(),
+                    'output': limit_output_lines(svc['attrs']['last_check_result']['output'].splitlines()),
                     'ack': ack,
                     'sort': '{}{}{}{}'.format(
                         int(svc['attrs']['state_type'])*-1,
@@ -136,6 +155,7 @@ def regenerate():
     with file("services.json", "wb") as f:
         f.write(json.dumps(services, ensure_ascii=False).encode("utf8"))
 
+
 def main():
     while 1:
         try:
@@ -144,6 +164,7 @@ def main():
             traceback.print_exc()
 
         time.sleep(20)
+
 
 if __name__ == "__main__":
     main()

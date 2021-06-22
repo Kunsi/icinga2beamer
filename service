@@ -76,7 +76,7 @@ def regenerate():
                 if host['attrs']['downtime_depth'] > 0:
                     continue
 
-                if host['attrs']['acknowledgement'] == 1:
+                if host['attrs']['acknowledgement'] > 0:
                     if not CONFIG['show_ack']:
                         continue
 
@@ -107,7 +107,7 @@ def regenerate():
                 if svc['attrs']['downtime_depth'] > 0 or svc['attrs']['host_name'] in broken_hosts:
                     continue
 
-                if svc['attrs']['acknowledgement'] == 1:
+                if svc['attrs']['acknowledgement'] > 0:
                     if not CONFIG['show_ack']:
                         continue
 

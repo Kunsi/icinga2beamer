@@ -65,19 +65,15 @@ function node.render()
 
     local y = CONFIG.output_size*2
     for idx, serv in ipairs(services.services) do
-        host_size = CONFIG.header_size
-        svc_size = CONFIG.header_size
+        header_font_size = CONFIG.header_size
         margin = math.min(CONFIG.output_size, 20)
 
-        while CONFIG.header_font:width(serv.host, host_size) > real_width/2-margin*1.5 do
-            host_size = host_size - 1
-        end
-        while CONFIG.header_font:width(serv.service, svc_size) > real_width/2-margin*1.5 do
-            svc_size = svc_size - 1
+        header_width = real_width-20-margin*2
+        while (CONFIG.header_font:width(serv.host, header_font_size) + CONFIG.header_font:width(serv.service, header_font_size)) > header_width do
+            header_font_size = header_font_size - 1
         end
 
-        my_height = (#serv.output*CONFIG.output_size*1.5)+margin*2+CONFIG.header_size+CONFIG.output_size*0.5
-        indent = math.min(host_width, real_width/2-margin*1.5)+margin*2
+        my_height = (#serv.output*CONFIG.output_size*1.5) + margin*3 + CONFIG.header_size
 
         if serv.type == 0 then
             c_soft[serv.state]:draw(0, y, real_width, y+my_height)
@@ -85,21 +81,21 @@ function node.render()
             c_hard[serv.state]:draw(0, y, real_width, y+my_height)
         end
 
-        y = y+margin
+        y = y + margin
 
-        CONFIG.header_font:write(10, y, serv.host, host_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
-        CONFIG.header_font:write(indent, y, serv.service, svc_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
+        service_x = real_width - margin - CONFIG.header_font:width(serv.service, header_font_size)
 
-        y = y+CONFIG.header_size+CONFIG.output_size*0.5
+        CONFIG.header_font:write(margin, y, serv.host, header_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
+        CONFIG.header_font:write(service_x, y, serv.service, header_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
 
-        CONFIG.output_font:write(10, y, serv.ack, CONFIG.output_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
+        y = y + CONFIG.header_size + margin
 
         for idx, line in ipairs(serv.output) do
-            CONFIG.output_font:write(indent, y, line, CONFIG.output_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
-            y = y+CONFIG.output_size*1.5
+            CONFIG.output_font:write(margin, y, line, CONFIG.output_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
+            y = y + CONFIG.output_size * 1.5
         end
 
-        y = y+margin+2
+        y = y + margin + 2
 
         if y > real_height then
             break

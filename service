@@ -80,7 +80,7 @@ def regenerate():
                     if not CONFIG['show_ack']:
                         continue
 
-                    ack = 'ACKNOWLEDGED'
+                    ack = '[ACK] '
                 else:
                     ack = ''
 
@@ -88,7 +88,7 @@ def regenerate():
                     continue
 
                 services['services'].append({
-                    'host': host['attrs']['display_name'],
+                    'host': ack + host['attrs']['display_name'],
                     'service': '-- HOST --',
                     'state': 2,
                     'type': int(host['attrs']['state_type']),

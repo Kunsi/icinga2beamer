@@ -111,7 +111,7 @@ def regenerate():
                     if not CONFIG['show_ack']:
                         continue
 
-                    ack = 'ACKNOWLEDGED'
+                    ack = '[ACK] '
                 else:
                     ack = ''
 
@@ -120,7 +120,7 @@ def regenerate():
 
                 services['services'].append({
                     'host': svc['attrs']['host_name'],
-                    'service': svc['attrs']['display_name'],
+                    'service': ack + svc['attrs']['display_name'],
                     'state': int(svc['attrs']['state']),
                     'type': int(svc['attrs']['state_type']),
                     'output': limit_output_lines(svc['attrs']['last_check_result']['output'].splitlines()),

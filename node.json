@@ -9,20 +9,35 @@
         "screenshot.jpg"
     ],
     "options": [{
-        "title": "Display Options",
+        "title": "Fonts and Sizes",
         "type": "section"
     }, {
-        "title": "Headings Font",
-        "ui_width": 6,
+        "title": "Headings Font Family",
+        "ui_width": 8,
         "name": "header_font",
         "type": "font",
         "default": "silkscreen.ttf"
     }, {
-        "title": "Output Font",
-        "ui_width": 6,
+        "title": "Headings Font Size",
+        "ui_width": 4,
+        "name": "header_size",
+        "type": "integer",
+        "default": 50
+    }, {
+        "title": "Output Font Family",
+        "ui_width": 8,
         "name": "output_font",
         "type": "font",
         "default": "silkscreen.ttf"
+    }, {
+        "title": "Output Font Size",
+        "ui_width": 4,
+        "name": "output_size",
+        "type": "integer",
+        "default": 30
+    }, {
+        "title": "Display Options",
+        "type": "section"
     }, {
         "title": "Screen Rotation",
         "ui_width": 4,
@@ -37,52 +52,18 @@
             [270, "270°"]
         ]
     }, {
-        "title": "Font Size (Headings)",
-        "ui_width": 4,
-        "name": "header_size",
-        "type": "select",
-        "default": 50,
-        "hint": "Font size of Host and Service name. Will be reduced to half screen width, if needed.",
-        "options": [
-            [20, "20px"],
-            [25, "25px"],
-            [30, "30px"],
-            [35, "35px"],
-            [40, "40px"],
-            [45, "45px"],
-            [50, "50px"],
-            [55, "55px"],
-            [60, "60px"]
-        ]
-    }, {
-        "title": "Font Size (Output)",
-        "ui_width": 4,
-        "name": "output_size",
-        "type": "select",
-        "default": 30,
-        "hint": "Font size of Check Output.",
-        "options": [
-            [10, "10px"],
-            [15, "15px"],
-            [20, "20px"],
-            [25, "25px"],
-            [30, "30px"],
-            [35, "35px"],
-            [40, "40px"]
-        ]
-    }, {
-        "title": "Background color",
-        "ui_width": 4,
-        "name": "background_color",
-        "type": "color",
-        "default": [0,0,0,1]
-    }, {
         "title": "instance name",
         "ui_width": 8,
         "name": "instance_name",
         "type": "string",
         "default": "icinga2",
         "hint": "Something to describe the displayed output, will be shown next to the update datum"
+    }, {
+        "title": "Background color",
+        "ui_width": 4,
+        "name": "background_color",
+        "type": "color",
+        "default": [0,0,0,1]
     }, {
         "title": "Show ACK",
         "ui_width": 3,

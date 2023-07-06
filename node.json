@@ -114,5 +114,11 @@
         "type": "string",
         "default": "https://icinga2/api/v1/objects/services?filter=service.state!=ServiceOK",
         "hint": "Full URL to the API endpoint which returns a list of monitored services. Keeping the filter is strongly recommended!"
+    }, {
+        "title": "Refresh Interval",
+        "ui_width": 4,
+        "name": "refresh_interval",
+        "type": "integer",
+        "default": 20
     }]
 }

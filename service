@@ -167,7 +167,7 @@ def main():
         except Exception:
             traceback.print_exc()
 
-        time.sleep(20)
+        time.sleep(CONFIG["refresh_interval"])
 
 
 if __name__ == "__main__":

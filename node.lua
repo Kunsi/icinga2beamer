@@ -60,15 +60,26 @@ function node.render()
 
     local y = CONFIG.output_size*2
     for idx, serv in ipairs(services.services) do
-        header_font_size = CONFIG.header_size
-        margin = math.min(CONFIG.output_size, 20)
+        local host_font_size = CONFIG.header_size
+        local service_font_size = CONFIG.header_size
+        local margin = math.min(CONFIG.output_size, 20)
+        local header_width = real_width-20-margin*2
+        local host_width = CONFIG.header_font:width(serv.host, host_font_size)
+        local service_width = CONFIG.header_font:width(serv.service, service_font_size)
+        local my_height = (#serv.output*CONFIG.output_size*1.5) + margin*3
 
-        header_width = real_width-20-margin*2
-        while (CONFIG.header_font:width(serv.host, header_font_size) + CONFIG.header_font:width(serv.service, header_font_size)) > header_width do
-            header_font_size = header_font_size - 1
+        if host_width + service_width > header_width then
+            -- two-line output, if possible
+            while CONFIG.header_font:width(serv.host, host_font_size) > header_width do
+                host_font_size = host_font_size -1
+            end
+            while CONFIG.header_font:width(serv.service, service_font_size) > header_width do
+                service_font_size = service_font_size -1
+            end
+            my_height = my_height + host_font_size + margin + service_font_size
+        else
+            my_height = my_height + CONFIG.header_size
         end
-
-        my_height = (#serv.output*CONFIG.output_size*1.5) + margin*3 + CONFIG.header_size
 
         if serv.type == 0 then
             c_soft[serv.state]:draw(0, y, real_width, y+my_height)
@@ -78,12 +89,18 @@ function node.render()
 
         y = y + margin
 
-        service_x = real_width - margin - CONFIG.header_font:width(serv.service, header_font_size)
+        service_x = real_width - margin - CONFIG.header_font:width(serv.service, service_font_size)
 
-        CONFIG.header_font:write(margin, y, serv.host, header_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
-        CONFIG.header_font:write(service_x, y, serv.service, header_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
-
-        y = y + CONFIG.header_size + margin
+        if host_width + service_width > header_width then
+            CONFIG.header_font:write(margin, y, serv.host, host_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
+            y = y + host_font_size + margin
+            CONFIG.header_font:write(service_x, y, serv.service, service_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
+            y = y + service_font_size + margin
+        else
+            CONFIG.header_font:write(margin, y, serv.host, host_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
+            CONFIG.header_font:write(service_x, y, serv.service, service_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
+            y = y + CONFIG.header_size + margin
+        end
 
         for idx, line in ipairs(serv.output) do
             CONFIG.output_font:write(margin, y, line, CONFIG.output_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)

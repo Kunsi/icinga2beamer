@@ -73,27 +73,25 @@ def regenerate():
             if host['attrs']['problem']:
                 broken_hosts.add(host['attrs']['display_name'])
 
-                if host['attrs']['downtime_depth'] > 0:
+                if (
+                    host['attrs']['downtime_depth'] > 0
+                    or (
+                        host['attrs']['acknowledgement'] > 0
+                        and not CONFIG['show_ack']
+                    )
+                ):
                     continue
-
-                if host['attrs']['acknowledgement'] > 0:
-                    if not CONFIG['show_ack']:
-                        continue
-
-                    ack = '[ACK] '
-                else:
-                    ack = ''
 
                 if not CONFIG['show_soft'] and int(host['attrs']['state_type']) == 0:
                     continue
 
                 services['services'].append({
-                    'host': ack + host['attrs']['display_name'],
+                    'host': host['attrs']['display_name'],
                     'service': '-- HOST --',
                     'state': 2,
                     'type': int(host['attrs']['state_type']),
                     'output': limit_output_lines(host['attrs']['last_check_result']['output'].splitlines(), 3),
-                    'ack': ack,
+                    'ack': bool(host['attrs']['acknowledgement'] > 0),
                     'sort': '{}{}{}{}'.format(
                         int(host['attrs']['state_type'])*-1,
                         SORT_ORDER[2],
@@ -104,27 +102,26 @@ def regenerate():
 
         for svc in serv['results']:
             if svc['attrs']['problem']:
-                if svc['attrs']['downtime_depth'] > 0 or svc['attrs']['host_name'] in broken_hosts:
+                if (
+                    svc['attrs']['host_name'] in broken_hosts
+                    or svc['attrs']['downtime_depth'] > 0
+                    or (
+                        svc['attrs']['acknowledgement'] > 0
+                        and not CONFIG['show_ack']
+                    )
+                ):
                     continue
-
-                if svc['attrs']['acknowledgement'] > 0:
-                    if not CONFIG['show_ack']:
-                        continue
-
-                    ack = ' [ACK]'
-                else:
-                    ack = ''
 
                 if not CONFIG['show_soft'] and int(svc['attrs']['state_type']) == 0:
                     continue
 
                 services['services'].append({
                     'host': svc['attrs']['host_name'],
-                    'service': svc['attrs']['display_name'] + ack,
+                    'service': svc['attrs']['display_name'],
                     'state': int(svc['attrs']['state']),
                     'type': int(svc['attrs']['state_type']),
                     'output': limit_output_lines(svc['attrs']['last_check_result']['output'].splitlines()),
-                    'ack': ack,
+                    'ack': bool(svc['attrs']['acknowledgement'] > 0),
                     'sort': '{}{}{}{}'.format(
                         int(svc['attrs']['state_type'])*-1,
                         SORT_ORDER[int(svc['attrs']['state'])],

@@ -4,6 +4,7 @@ local json = require "json"
 local services = {}
 local rotate_before = nil
 local transform = nil
+local ack_image = resource.load_image("ack.png")
 
 local c_hard = {}
 c_hard[0] = resource.create_colored_texture(0,   0.666, 0,   1)
@@ -68,6 +69,10 @@ function node.render()
         local service_width = CONFIG.header_font:width(serv.service, service_font_size)
         local my_height = (#serv.output*CONFIG.output_size*1.5) + margin*3
 
+        if serv.ack then
+            header_width = header_width - margin - host_font_size
+        end
+
         if host_width + service_width > header_width then
             -- two-line output, if possible
             while CONFIG.header_font:width(serv.host, host_font_size) > header_width do
@@ -89,15 +94,21 @@ function node.render()
 
         y = y + margin
 
-        service_x = real_width - margin - CONFIG.header_font:width(serv.service, service_font_size)
+        local service_x = real_width - margin - CONFIG.header_font:width(serv.service, service_font_size)
+        local host_x = margin
+
+        if serv.ack then
+            ack_image:draw(host_x, y, host_x + host_font_size, y + host_font_size)
+            host_x = host_x + host_font_size + margin
+        end
 
         if host_width + service_width > header_width then
-            CONFIG.header_font:write(margin, y, serv.host, host_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
+            CONFIG.header_font:write(host_x, y, serv.host, host_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
             y = y + host_font_size + margin
             CONFIG.header_font:write(service_x, y, serv.service, service_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
             y = y + service_font_size + margin
         else
-            CONFIG.header_font:write(margin, y, serv.host, host_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
+            CONFIG.header_font:write(host_x, y, serv.host, host_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][2],1)
             CONFIG.header_font:write(service_x, y, serv.service, service_font_size, c_text[serv.state][1],c_text[serv.state][2],c_text[serv.state][3],1)
             y = y + CONFIG.header_size + margin
         end

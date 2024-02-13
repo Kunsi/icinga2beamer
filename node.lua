@@ -53,15 +53,10 @@ function node.render()
     end
 
     local title_width = CONFIG.header_font:width(titlebar, CONFIG.output_size)
-    local host_width = 0
 
     transform()
     CONFIG.background_color.clear()
     CONFIG.header_font:write(real_width/2-title_width/2, CONFIG.output_size*0.5, titlebar, CONFIG.output_size, 1,1,1,1)
-
-    for idx, service in ipairs(services.services) do
-        host_width = math.max(host_width, CONFIG.header_font:width(service.host, CONFIG.header_size))
-    end
 
     local y = CONFIG.output_size*2
     for idx, serv in ipairs(services.services) do

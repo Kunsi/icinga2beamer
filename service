@@ -87,7 +87,7 @@ def regenerate():
 
                 services['services'].append({
                     'host': host['attrs']['display_name'],
-                    'service': '-- HOST --',
+                    'service': '',
                     'state': 2,
                     'type': int(host['attrs']['state_type']),
                     'output': limit_output_lines(host['attrs']['last_check_result']['output'].splitlines(), 3),

@@ -2,7 +2,7 @@
     "name": "icinga2beamer",
     "author": "Kunsi <hi@kunsmann.eu>",
     "desc": "icinga2 information radiator",
-    "repository": "https://git.kunsmann.eu/kunsi/icinga2beamer",
+    "repository": "https://git.franzi.business/kunsi/icinga2beamer.git",
     "nesting": {
         "parents": [
             "top-level"
